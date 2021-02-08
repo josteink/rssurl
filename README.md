@@ -25,7 +25,7 @@ cargo build
 
 ## basic usage
 
-To use rssurl, find the ATOM feed for a given site, and point it at
+To use rssurl, find the feed-url for a given site, and point it at
 this tool.
 
 ````sh
@@ -41,7 +41,7 @@ shows and import then into your Plex?
 Compose! Go crazy! Make it happen!
 
 ````sh
-# step 1: obtain ATOM feed URL (view source, however)
+# step 1: obtain feed-url (view source, however)
 FEED=https://www.youtube.com/feeds/videos.xml?channel_id=UCrTNhL_yO3tPTdQ5XgmmWjA
 # step 2: build
 cargo build
