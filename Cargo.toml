@@ -1,0 +1,12 @@
+[package]
+name = "rssurl"
+version = "0.1.0"
+authors = ["Jostein Kjønigsen <jostein@kjonigsen.net>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = { version = "0.11.0", features = ["blocking"] }
+atom_syndication = "0.9.1"
+structopt = "0.3.21"
