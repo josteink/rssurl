@@ -12,8 +12,8 @@ I wanted to do this in rust, so here we are!
 
 ## features
 
-- obtain links from ATOM-feeds
-- nothing else
+- obtain links from ATOM-feeds and RSS-feeds
+- automatically detect feed-type
 
 ## building
 

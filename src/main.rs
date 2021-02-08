@@ -1,7 +1,9 @@
 extern crate reqwest;
-extern crate atom_syndication;
+extern crate syndication;
 
 use structopt::StructOpt;
+use std::error::Error;
+use syndication::Feed;
 
 #[derive(StructOpt, Debug)]
 struct Cli {
@@ -9,9 +11,6 @@ struct Cli {
     url: String
 }
 
-
-use std::error::Error;
-use atom_syndication::Feed;
 
 fn main() {
     let args = Cli::from_args();
@@ -24,29 +23,36 @@ fn main() {
 }
 
 fn process(url: &str) -> Result<(),Box<dyn Error>> {
-    let entries = get_entries(url)?;
+    let rss_str = get_text(url)?;
+    let entries = get_entries(&rss_str)?;
     dump_entries(&entries);
     Ok(())
 }
 
-fn get_entries(url: &str) -> Result<Vec<String>, Box<dyn Error>> {
+fn get_text(url: &str) -> Result<String, Box<dyn Error>> {
     let response = reqwest::blocking::get(url)?;
+    let rss_str = response.text()?;
+    Ok(rss_str.to_string())
+}
 
-    let text = response.text()?;
-
-    let channel = text.parse::<Feed>();
-    let channel = match channel {
-        Ok(channel) => channel,
-        Err(e) => panic!("Something went wrong: {}", e),
-    };
-
+fn get_entries(rss_str: &str) -> Result<Vec<String>, Box<dyn Error>> {
     let mut vec = Vec::new();
 
-    for entry in channel.entries() {
-        let link = &entry.links()[0];
-        let url = link.href().to_string();
+    match rss_str.parse::<Feed>().unwrap() {
+        Feed::RSS(rss_feed) => {
+            for entry in rss_feed.items() {
+                let url = entry.link.as_ref().unwrap().to_string();
+                vec.push(String::from(url));
+            }
+        },
+        Feed::Atom(atom_feed) => {
+            for entry in atom_feed.entries() {
+                let link = &entry.links()[0];
+                let url = link.href().to_string();
 
-        vec.push(url);
+                vec.push(String::from(url));
+            }
+        }
     }
 
     Ok(vec)
