@@ -1,5 +1,7 @@
 # rssurl
 
+![Rust](https://github.com/josteink/rssurl/workflows/Rust/badge.svg)
+
 A very simple command-line utility to extract links from RSS feeds,
 for use in shell-scripts.
 
