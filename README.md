@@ -47,7 +47,7 @@ FEED=https://www.youtube.com/feeds/videos.xml?channel_id=UCrTNhL_yO3tPTdQ5XgmmWj
 cargo build
 # invoke prebuilt binary directly to avoid cargo build-headers in output!
 URLS=`./target/debug/rssurl $FEED`
-# get it yer plex!
+# get it on yer plex!
 youtube-dl $URLS
 ````
 
