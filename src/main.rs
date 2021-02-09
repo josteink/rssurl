@@ -1,5 +1,7 @@
 extern crate reqwest;
 extern crate syndication;
+extern crate atom_syndication;
+extern crate rss;
 
 use structopt::StructOpt;
 use std::error::Error;
@@ -36,23 +38,31 @@ fn get_text(url: &str) -> Result<String, Box<dyn Error>> {
 }
 
 fn get_entries(rss_str: &str) -> Result<Vec<String>, Box<dyn Error>> {
+    match rss_str.parse::<Feed>().unwrap() {
+        Feed::RSS(rss_feed) => get_rss_entries(rss_feed),
+        Feed::Atom(atom_feed) => get_atom_entries(atom_feed)
+    }
+}
+
+fn get_rss_entries(rss_feed: rss::Channel) -> Result<Vec<String>, Box<dyn Error>> {
     let mut vec = Vec::new();
 
-    match rss_str.parse::<Feed>().unwrap() {
-        Feed::RSS(rss_feed) => {
-            for entry in rss_feed.items() {
-                let url = entry.link.as_ref().unwrap().to_string();
-                vec.push(String::from(url));
-            }
-        },
-        Feed::Atom(atom_feed) => {
-            for entry in atom_feed.entries() {
-                let link = &entry.links()[0];
-                let url = link.href().to_string();
+    for entry in rss_feed.items() {
+        let url = entry.link.as_ref().unwrap().to_string();
+        vec.push(String::from(url));
+    }
 
-                vec.push(String::from(url));
-            }
-        }
+    Ok(vec)
+}
+
+fn get_atom_entries(atom_feed: atom_syndication::Feed) -> Result<Vec<String>, Box<dyn Error>> {
+    let mut vec = Vec::new();
+
+    for entry in atom_feed.entries() {
+        let link = &entry.links()[0];
+        let url = link.href().to_string();
+
+        vec.push(String::from(url));
     }
 
     Ok(vec)
