@@ -9,7 +9,6 @@ use syndication::Feed;
 
 #[derive(StructOpt, Debug)]
 struct Cli {
-    /// The path to the file to read
     url: String
 }
 
