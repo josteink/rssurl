@@ -14,6 +14,7 @@ I wanted to do this in rust, so here we are!
 
 - obtain links from ATOM-feeds and RSS-feeds
 - automatically detect feed-type
+- statically linked, because rust, all the way, including the crypto-dependencies
 
 ## building
 
