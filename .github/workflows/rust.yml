@@ -24,7 +24,7 @@ jobs:
       run: cargo install cargo2junit
     - name: Run tests
       run: cargo test -- -Z unstable-options --format json | cargo2junit > results.xml
-    - task: PublishTestResults@2
+    - uses: PublishTestResults@2
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: 'results.xml'
