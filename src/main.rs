@@ -47,7 +47,7 @@ fn get_rss_entries(rss_feed: rss::Channel) -> Result<Vec<String>, Box<dyn Error>
     let mut vec = Vec::new();
 
     for entry in rss_feed.items() {
-        let url = entry.link.as_ref().unwrap().to_string();
+        let url = entry.link.as_ref().unwrap();
         vec.push(String::from(url));
     }
 
@@ -59,7 +59,7 @@ fn get_atom_entries(atom_feed: atom_syndication::Feed) -> Result<Vec<String>, Bo
 
     for entry in atom_feed.entries() {
         let link = &entry.links()[0];
-        let url = link.href().to_string();
+        let url = link.href();
 
         vec.push(String::from(url));
     }
