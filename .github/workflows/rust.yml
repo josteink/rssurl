@@ -29,3 +29,5 @@ jobs:
       if: always()
       with:
         files: results.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
